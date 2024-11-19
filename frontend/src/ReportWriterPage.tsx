@@ -56,22 +56,21 @@ function transformReport(report: string, gender: string | null): string {
 function ReportWriterPage() {
   const textField = useRef<HTMLTextAreaElement>(null);
 
+  const [report, setReport] = useState<string>("");
+  const [gender, setGender] = useState<string | null>(null);
+
   useEffect(() => {
     window.addEventListener("keydown", (e) => {
       if (e.key === "F2") {
         e.preventDefault();
         if (textField.current != null) {
           const fieldStart = report.indexOf("***");
-          // Does not work with material UI right now
-          textField.current.setSelectionRange(fieldStart, fieldStart + 3);
           textField.current.focus();
+          textField.current.setSelectionRange(fieldStart, fieldStart + 3);
         }
       }
     });
-  }, []);
-
-  const [report, setReport] = useState<string>("");
-  const [gender, setGender] = useState<string | null>(null);
+  }, [report, textField]);
 
   return (
     <Container fixed sx={{ mt: 3 }}>
