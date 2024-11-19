@@ -44,6 +44,9 @@ function SmartPhraseEditor(props: Props) {
             multiline
             fullWidth
             value={smartphrase.title}
+            onChange={(e) =>
+              setSmartPhrase({ ...smartphrase, title: e.target.value })
+            }
           />
         </CardContent>
       </Card>
@@ -57,6 +60,9 @@ function SmartPhraseEditor(props: Props) {
         fullWidth
         minRows={10}
         value={smartphrase.template}
+        onChange={(e) =>
+          setSmartPhrase({ ...smartphrase, template: e.target.value })
+        }
       />
       <Button variant="contained" fullWidth>
         Save
