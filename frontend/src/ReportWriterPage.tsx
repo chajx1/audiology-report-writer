@@ -4,6 +4,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Typography,
+  Button,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import data from "./dummydata";
@@ -15,6 +16,13 @@ function capitalize(s: string): string {
 function transformReport(report: string, gender: string | null): string {
   const phrases = data.getSmartPhrases();
   let newReport = report.replaceAll("@TD@", new Date().toLocaleDateString());
+
+  // if (.str in report) {
+  //   const regex = /\..*?(?=\s)/g;
+  //   if (regex in phrases) {
+  //     report.replaceAll(regex, smartphrase.template)
+  //   }
+  // }
 
   if (gender == null) {
     return newReport;
@@ -94,6 +102,14 @@ function ReportWriterPage() {
           <ToggleButton value="they">They</ToggleButton>
         </ToggleButtonGroup>
       )}
+
+      <Button
+        variant="contained"
+        onClick={() => setReport(transformReport(report, gender))}
+      >
+        Convert Smartphrases
+      </Button>
+
       <TextField
         inputRef={textField}
         multiline
