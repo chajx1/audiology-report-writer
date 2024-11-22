@@ -13,12 +13,29 @@ function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+function lookupSmartphrase(s: string): string {
+  return "template"; // template if it exists
+}
+
 function transformReport(report: string, gender: string | null): string {
   const phrases = data.getSmartPhrases();
   let newReport = report.replaceAll("@TD@", new Date().toLocaleDateString());
-
+  // const regex = /\..*?(?=\s)/g;
+  let smartphrase = "";
+  for (let i = 0; i < report.length - 1; i++) {
+    if (report.slice(i, i + 1) === "." && report.slice(i + 1, i + 2) !== " ") {
+      let idx = i;
+      let smartphrase = "";
+      while (idx < report.length - 1 && report.slice(i, i + 1)) {
+        smartphrase += report.slice(idx, idx + 1);
+        idx++;
+      }
+      console.log(smartphrase);
+      // lookupSmartphrase(smartphrase);
+    }
+  }
   // if (.str in report) {
-  //   const regex = /\..*?(?=\s)/g;
+  // const regex = /\..*?(?=\s)/g;
   //   if (regex in phrases) {
   //     report.replaceAll(regex, smartphrase.template)
   //   }
