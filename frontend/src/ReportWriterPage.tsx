@@ -41,9 +41,7 @@ function transformReport(report: string, gender: string | null): string {
         smartphrase += report.slice(idx, idx + 1);
         idx++;
       }
-      console.log(`smartphrase: ${smartphrase}`);
       let template = lookupSmartphrase(smartphrase);
-      console.log(template);
       if (template !== "") {
         newReport = newReport.replace(smartphrase, template);
         console.log(`new report: ${newReport}`);
@@ -129,13 +127,6 @@ function ReportWriterPage() {
           <ToggleButton value="they">They</ToggleButton>
         </ToggleButtonGroup>
       )}
-
-      <Button
-        variant="contained"
-        onClick={() => setReport(transformReport(report, gender))}
-      >
-        Convert Smartphrases
-      </Button>
 
       <TextField
         inputRef={textField}
