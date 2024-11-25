@@ -4,17 +4,50 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Typography,
+  Button,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import data from "./dummydata";
+
+const smartphraseHash: { [key: string]: string } = {
+  sn: "sensorineural hearing loss",
+  dx: "@TD@ @LNAME@ has ***",
+};
 
 function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+function lookupSmartphrase(s: string): string {
+  s = s.slice(1);
+  if (smartphraseHash.hasOwnProperty(s)) {
+    return smartphraseHash[s];
+  } else {
+    return "";
+  }
+}
+
 function transformReport(report: string, gender: string | null): string {
   const phrases = data.getSmartPhrases();
   let newReport = report.replaceAll("@TD@", new Date().toLocaleDateString());
+  // const regex = /\..*?(?=\s)/g;
+  let smartphrase;
+
+  for (let i = 0; i < report.length - 1; i++) {
+    if (report.slice(i, i + 1) === "." && report.slice(i + 1, i + 2) !== " ") {
+      let idx = i;
+      let smartphrase = "";
+      while (idx < report.length - 1 && report.slice(idx, idx + 1) !== " ") {
+        smartphrase += report.slice(idx, idx + 1);
+        idx++;
+      }
+      let template = lookupSmartphrase(smartphrase);
+      if (template !== "") {
+        newReport = newReport.replace(smartphrase, template);
+        console.log(`new report: ${newReport}`);
+      }
+    }
+  }
 
   if (gender == null) {
     return newReport;
@@ -94,6 +127,7 @@ function ReportWriterPage() {
           <ToggleButton value="they">They</ToggleButton>
         </ToggleButtonGroup>
       )}
+
       <TextField
         inputRef={textField}
         multiline

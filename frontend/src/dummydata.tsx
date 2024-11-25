@@ -19,6 +19,10 @@ class DummyData {
     ];
   }
 
+  // We should probably structure smartphrases like a dict or hash table
+  // so that when we try to replace a smartphrase with the template,
+  // we can achieve O(1) lookup, instead of looping through all phrases.
+
   addSmartPhrase(smartphrase: SmartPhrase) {
     this.smartphrases.push(smartphrase);
   }
