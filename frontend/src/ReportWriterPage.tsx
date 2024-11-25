@@ -9,37 +9,47 @@ import {
 import { useEffect, useRef, useState } from "react";
 import data from "./dummydata";
 
+const smartphraseHash: { [key: string]: string } = {
+  sn: "sensorineural hearing loss",
+  dx: "@TD@ @LNAME@ has ***",
+};
+
 function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
 function lookupSmartphrase(s: string): string {
-  return "template"; // template if it exists
+  s = s.slice(1);
+  if (smartphraseHash.hasOwnProperty(s)) {
+    return smartphraseHash[s];
+  } else {
+    return "";
+  }
 }
 
 function transformReport(report: string, gender: string | null): string {
   const phrases = data.getSmartPhrases();
   let newReport = report.replaceAll("@TD@", new Date().toLocaleDateString());
   // const regex = /\..*?(?=\s)/g;
-  let smartphrase = "";
+  let smartphrase;
+
   for (let i = 0; i < report.length - 1; i++) {
     if (report.slice(i, i + 1) === "." && report.slice(i + 1, i + 2) !== " ") {
       let idx = i;
       let smartphrase = "";
-      while (idx < report.length - 1 && report.slice(i, i + 1)) {
+      while (idx < report.length - 1 && report.slice(idx, idx + 1) !== " ") {
         smartphrase += report.slice(idx, idx + 1);
         idx++;
       }
-      console.log(smartphrase);
-      // lookupSmartphrase(smartphrase);
+      console.log(`smartphrase: ${smartphrase}`);
+      let template = lookupSmartphrase(smartphrase);
+      console.log(template);
+      if (template !== "") {
+        newReport = newReport.replace(smartphrase, template);
+        console.log(`new report: ${newReport}`);
+      }
     }
   }
-  // if (.str in report) {
-  // const regex = /\..*?(?=\s)/g;
-  //   if (regex in phrases) {
-  //     report.replaceAll(regex, smartphrase.template)
-  //   }
-  // }
 
   if (gender == null) {
     return newReport;
