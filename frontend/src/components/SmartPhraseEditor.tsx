@@ -11,12 +11,12 @@ import { useState } from "react";
 
 type Props = {
   smartphrase: undefined | null | SmartPhrase;
+  onSave: (sp: SmartPhrase) => void;
 };
 
 function SmartPhraseEditor(props: Props) {
   const [smartphrase, setSmartPhrase] = useState<SmartPhrase>(
     props.smartphrase ?? {
-      id: null,
       smartphrase: null,
       title: null,
       template: null,
@@ -24,7 +24,7 @@ function SmartPhraseEditor(props: Props) {
   );
 
   return (
-    <Container fixed sx={{ mt: 3 }}>
+    <>
       <Typography variant="h4" component="h1">
         SmartPhrase Editor
       </Typography>
@@ -64,10 +64,14 @@ function SmartPhraseEditor(props: Props) {
           setSmartPhrase({ ...smartphrase, template: e.target.value })
         }
       />
-      <Button variant="contained" fullWidth>
+      <Button
+        variant="contained"
+        fullWidth
+        onClick={() => props.onSave(smartphrase)}
+      >
         Save
       </Button>
-    </Container>
+    </>
   );
 }
 
