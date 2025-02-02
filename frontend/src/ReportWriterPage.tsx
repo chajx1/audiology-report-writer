@@ -6,7 +6,7 @@ import {
   Typography,
   Button,
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SmartPhrase } from "./types";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "./firebase";
@@ -31,18 +31,21 @@ function transformReport(
   report: string,
   gender: string | null,
   phrases: SmartPhrase[]
-): string {
+): { newReport: string; cursorPos: null | number } {
   let newReport = report.replaceAll("@TD@", new Date().toLocaleDateString());
-  // const regex = /\..*?(?=\s)/g;
   let smartphrase;
+  let cursorPos = null;
 
   for (let i = 0; i < report.length - 1; i++) {
     if (report.slice(i, i + 1) === "." && report.slice(i + 1, i + 2) !== " ") {
       let idx = i;
       let smartphrase = "";
-      while (idx < report.length - 1 && report.slice(idx, idx + 1) !== " ") {
+      while (idx < report.length && report.slice(idx, idx + 1) !== " ") {
         smartphrase += report.slice(idx, idx + 1);
         idx++;
+      }
+      if (report.slice(idx, idx + 1) !== " ") {
+        smartphrase = "";
       }
       let template = lookupSmartphrase(
         smartphrase,
@@ -50,13 +53,13 @@ function transformReport(
       );
       if (template !== "") {
         newReport = newReport.replace(smartphrase, template);
-        // console.log(`new report: ${newReport}`);
+        cursorPos = idx - smartphrase.length + template.length + 1;
       }
     }
   }
 
   if (gender == null) {
-    return newReport;
+    return { newReport, cursorPos };
   }
   // Gender replacements
   let possessive = "";
@@ -87,7 +90,7 @@ function transformReport(
   newReport = newReport.replaceAll("@him", object);
   newReport = newReport.replaceAll("@his", possessive);
 
-  return newReport;
+  return { newReport, cursorPos };
 }
 
 const FIELD_STR = "***";
@@ -99,8 +102,6 @@ function ReportWriterPage() {
   const [gender, setGender] = useState<string | null>(null);
   const [fieldIndex, setFieldIndex] = useState<number>(0);
   const [phrases, setPhrases] = useState<SmartPhrase[]>([]);
-
-  console.log(phrases);
 
   useEffect(() => {
     getDocs(query(collection(db, "users"), where("uid", "==", "Me"))).then(
@@ -124,11 +125,6 @@ function ReportWriterPage() {
             FIELD_STR,
             textField.current.selectionEnd
           );
-          // if (report.indexOf(FIELD_STR, fieldStart + FIELD_STR.length) === -1) {
-          //   setFieldIndex(0);
-          // } else {
-          //   setFieldIndex(fieldStart + FIELD_STR.length);
-          // }
           textField.current.focus();
           textField.current.setSelectionRange(fieldStart, fieldStart + 3);
         }
@@ -151,7 +147,7 @@ function ReportWriterPage() {
           exclusive
           onChange={(_event, newGender) => {
             setGender(newGender);
-            setReport(transformReport(report, newGender, phrases));
+            setReport(transformReport(report, newGender, phrases).newReport);
           }}
           aria-label="gender"
         >
@@ -168,9 +164,25 @@ function ReportWriterPage() {
         fullWidth
         sx={{ mt: 3 }}
         value={report}
-        onChange={(e) =>
-          setReport(transformReport(e.target.value, gender, phrases))
-        }
+        onChange={(e) => {
+          const nonTransformedReport = e.target.value;
+          const { newReport, cursorPos } = transformReport(
+            e.target.value,
+            gender,
+            phrases
+          );
+          if (nonTransformedReport !== newReport) {
+            setReport(newReport);
+            if (cursorPos) {
+              setTimeout(() => {
+                textField.current?.focus();
+                textField.current?.setSelectionRange(cursorPos, cursorPos);
+              }, 60);
+            }
+          } else {
+            setReport(newReport);
+          }
+        }}
       />
     </Container>
   );

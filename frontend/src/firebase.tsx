@@ -9,6 +9,6 @@ import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
-if (window.location.hostname === "localhost") {
-  connectFirestoreEmulator(db, "localhost", 8080);
-}
+// if (window.location.hostname === "localhost") {
+//   connectFirestoreEmulator(db, "localhost", 8080);
+// }
