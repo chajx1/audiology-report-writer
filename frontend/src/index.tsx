@@ -15,10 +15,6 @@ const root = ReactDOM.createRoot(
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
-  },
-  {
-    path: "/writer",
     element: <ReportWriterPage />,
   },
   {
@@ -30,6 +26,8 @@ const router = createBrowserRouter([
     element: <SmartPhraseEditorPage />,
   },
 ]);
+
+// router outlet?
 
 root.render(
   <React.StrictMode>

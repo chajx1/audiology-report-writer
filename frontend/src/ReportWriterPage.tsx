@@ -121,12 +121,17 @@ function ReportWriterPage() {
       if (e.key === "F2") {
         e.preventDefault();
         if (textField.current != null) {
-          const fieldStart = report.indexOf(
+          let fieldStart = report.indexOf(
             FIELD_STR,
             textField.current.selectionEnd
           );
+          if (fieldStart === -1) {
+            fieldStart = report.indexOf(FIELD_STR);
+          }
           textField.current.focus();
-          textField.current.setSelectionRange(fieldStart, fieldStart + 3);
+          if (fieldStart > -1) {
+            textField.current.setSelectionRange(fieldStart, fieldStart + 3);
+          }
         }
       }
     };
