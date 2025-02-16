@@ -6,11 +6,11 @@ The Audiology Report Writer is a web-based application designed to streamline re
 
 ## Key Features
 
-- Template-based reporting: Use pre-built templates and phrases to quickly generate reports.
+- Template-based reporting: Use pre-built templates and phrases to quickly generate reports. Create your own templates at https://audiology-reports.web.app/smartphrases. 
 
-- Shortcut phrases: Type shorter phrases to autopopulate longer report sections.
+- Shortcut phrases: Type shorter phrases to autopopulate longer report sections. These "smartphrases" are created by preceding an abbreviation with a period. For example: ".snhl" yields "sensorineural hearing loss"
 
-- Wildcard navigation: Easily navigate to the next wildcard spot in a report.
+- Wildcard navigation: Easily navigate to the next wildcard spot in a report. Wildcards are represented with triple asterisks ("***"); highlight next wildcard with F2.
 
 ## Technical Details
 
