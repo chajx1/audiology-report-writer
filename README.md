@@ -20,7 +20,7 @@ The Audiology Report Writer is a web-based application designed to streamline re
 
 ## Getting Started
 
-The Audiology Report Writer is already live and available for use at https://audiology-reports.web.app/
+The Audiology Report Writer is already live and available for use at https://audiology-reports.web.app/. To run the app locally, clone this repository and use the command "npm start". 
 
 ## Contribution Guidelines
 While this project is relatively small, we appreciate any contributions that can help improve the application. If you'd like to report an issue or submit a bug fix, please use GitHub pull requests.
