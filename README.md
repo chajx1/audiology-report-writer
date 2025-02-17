@@ -10,15 +10,13 @@ The Audiology Report Writer is a web-based application designed to streamline re
 
 - Shortcut phrases: Type shorter phrases to autopopulate longer report sections. These "smartphrases" are created by preceding an abbreviation with a period. For example: ".snhl" yields "sensorineural hearing loss"
 
-- Wildcard navigation: Easily navigate to the next wildcard spot in a report. Wildcards are represented with triple asterisks ("***"); highlight next wildcard with F2.
+- Wildcard navigation: Easily navigate to the next wildcard spot in a report. Wildcards are represented with triple asterisks ("***"); highlight the next wildcard by pressing F2.
 
 ## Technical Details
 
 - Built with React and TypeScript: Leveraging modern web development frameworks for a seamless user experience.
 
 - Powered by Firebase: Utilizing Firebase for backend database and web hosting.
-
-- Utilizing Material-UI: Thanks to Material-UI for providing a comprehensive UI library.
 
 ## Getting Started
 
